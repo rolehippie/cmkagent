@@ -1,4 +1,4 @@
-# Standards: 0.1
+# Standards: 1.2
 ---
 # @var cmkagent_download_url:description: Base URL to download the files from
 # @var cmkagent_download_url:example: $ "https://demo.checkmk.com/demo/check_mk/check_mk/agents"
