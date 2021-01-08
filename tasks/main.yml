@@ -1,0 +1,238 @@
+# Standards: 0.1
+---
+- name: Install required packages
+  loop: "{{ cmkagent_general_packages + cmkagent_extra_packages }}"
+  package:
+    name: "{{ item }}"
+    state: present
+  tags:
+    - cmkagent
+
+- name: Install python shebang
+  when:
+    - ansible_distribution == 'Ubuntu'
+    - ansible_distribution_version is version('20.04', '>=')
+  package:
+    name: "{{ cmkagent_python_shebang }}"
+    state: present
+  tags:
+    - cmkagent
+
+- name: Symlink python wrapper
+  when:
+    - ansible_distribution == 'Ubuntu'
+    - ansible_distribution_version is version('19.10', '<=')
+  file:
+    src: "{{ cmkagent_python_symlink }}"
+    dest: /usr/bin/python
+    state: link
+  tags:
+    - cmkagent
+
+- name: Download required executables
+  loop:
+    - check_mk_agent.linux
+    - check_mk_caching_agent.linux
+    - mk-job
+    - waitmax
+  get_url:
+    url: "{{ cmkagent_download_url }}/{{ item }}"
+    dest: "/usr/bin/{{ item | regex_replace('\\.linux$', '') }}"
+    owner: root
+    group: root
+    mode: u=rwx,g=rx,o=rx
+  tags:
+    - cmkagent
+
+- name: Create required dirctories
+  loop:
+    - /etc/check_mk
+    - /usr/lib/check_mk_agent
+    - /usr/lib/check_mk_agent/local
+    - /usr/lib/check_mk_agent/plugins
+    - /var/lib/check_mk_agent
+    - /var/lib/check_mk_agent/job
+    - /var/lib/check_mk_agent/spool
+  file:
+    path: "{{ item }}"
+    group: root
+    owner: root
+    mode: o=rwx,g=rx,o=rx
+    state: directory
+  tags:
+    - cmkagent
+
+- name: Write plugin config
+  loop: "{{ (cmkagent_general_plugins + cmkagent_extra_plugins) | subelements('configs', skip_missing=True) }}"
+  loop_control:
+    label: "{{ item.0.name }}: {{ item.1.name }}"
+  when: item.0.state | default("present") == "present"
+  copy:
+    content: "{{ item.1.content }}"
+    dest: "/etc/check_mk/{{ item.1.name }}"
+    owner: root
+    group: root
+    mode: o=rw,grw,o=
+  tags:
+    - cmkagent
+
+- name: Delete plugin config
+  loop: "{{ (cmkagent_general_plugins + cmkagent_extra_plugins) | subelements('configs', skip_missing=True) }}"
+  loop_control:
+    label: "{{ item.0.name }}: {{ item.1.name }}"
+  when: item.0.state | default("present") == "absent"
+  file:
+    path: "/etc/check_mk/{{ item.1.name }}"
+    state: absent
+  tags:
+    - cmkagent
+
+- name: Plugins from url
+  loop: "{{ cmkagent_general_plugins + cmkagent_extra_plugins }}"
+  loop_control:
+    label: "{{ item.name }}"
+  when: item.url | default(False) and item.state | default("present") == "present"
+  get_url:
+    url: "{{ item.url }}"
+    dest: "/usr/lib/check_mk_agent/plugins/{{ item.name }}"
+    owner: root
+    group: root
+    mode: o=rwx,g=rx,o=rx
+  tags:
+    - cmkagent
+
+- name: Plugins from content
+  loop: "{{ cmkagent_general_plugins + cmkagent_extra_plugins }}"
+  loop_control:
+    label: "{{ item.name }}"
+  when: item.content | default(False) and item.state | default("present") == "present"
+  copy:
+    content: "{{ item.content }}"
+    dest: "/usr/lib/check_mk_agent/plugins/{{ item.name }}"
+    owner: root
+    group: root
+    mode: o=rwx,g=rx,o=rx
+  tags:
+    - cmkagent
+
+- name: Plugins from file
+  loop: "{{ cmkagent_general_plugins + cmkagent_extra_plugins }}"
+  loop_control:
+    label: "{{ item.name }}"
+  when: item.src | default(False) and item.state | default("present") == "present"
+  copy:
+    src: "{{ item.src }}"
+    dest: "/usr/lib/check_mk_agent/plugins/{{ item.name }}"
+    owner: root
+    group: root
+    mode: o=rwx,g=rx,o=rx
+  tags:
+    - cmkagent
+
+- name: Delete defined plugins
+  loop: "{{ cmkagent_general_plugins + cmkagent_extra_plugins }}"
+  loop_control:
+    label: "{{ item.name }}"
+  when: item.state | default("present") == "absent"
+  file:
+    path: "/usr/lib/check_mk_agent/plugins/{{ item.name }}"
+    state: absent
+  tags:
+    - cmkagent
+
+- name: Create cache directories
+  loop: "{{ cmkagent_general_checks + cmkagent_extra_checks }}"
+  loop_control:
+    label: "{{ item.name }}"
+  when: item.cache_time | default(0) > 0
+  file:
+    name: "/usr/lib/check_mk_agent/local/{{ item.cache_time }}"
+    owner: root
+    group: root
+    mode: o=rwx,g=rx,o=rx
+    state: directory
+  tags:
+    - cmkagent
+
+- name: Check from url
+  loop: "{{ cmkagent_general_checks + cmkagent_extra_checks }}"
+  loop_control:
+    label: "{{ item.name }}"
+  when: item.url | default(False) and item.state | default("present") == "present"
+  get_url:
+    url: "{{ item.url }}"
+    dest: "/usr/lib/check_mk_agent/local{{ '/' + item.cache_time | string if item.cache_time | default(False) else '' }}/{{ item.name }}"
+    owner: root
+    group: root
+    mode: o=rwx,g=rx,o=rx
+  tags:
+    - cmkagent
+
+- name: Check from content
+  loop: "{{ cmkagent_general_checks + cmkagent_extra_checks }}"
+  loop_control:
+    label: "{{ item.name }}"
+  when: item.content | default(False) and item.state | default("present") == "present"
+  copy:
+    content: "{{ item.content }}"
+    dest: "/usr/lib/check_mk_agent/local{{ '/' + item.cache_time | string if item.cache_time | default(False) else '' }}/{{ item.name }}"
+    owner: root
+    group: root
+    mode: o=rwx,g=rx,o=rx
+  tags:
+    - cmkagent
+
+- name: Check from template
+  loop: "{{ cmkagent_general_checks + cmkagent_extra_checks }}"
+  loop_control:
+    label: "{{ item.name }}"
+  when: item.src | default(False) and item.state | default("present") == "present"
+  template:
+    src: "{{ item.src }}"
+    dest: "/usr/lib/check_mk_agent/local{{ '/' + item.cache_time | string if item.cache_time | default(False) else '' }}/{{ item.name }}"
+    owner: root
+    group: root
+    mode: o=rwx,g=rx,o=rx
+  tags:
+    - cmkagent
+
+- name: Delete defined checks
+  loop: "{{ cmkagent_general_checks + cmkagent_extra_checks }}"
+  loop_control:
+    label: "{{ item.name }}"
+  when: item.state | default("present") == "absent"
+  file:
+    path: "/usr/lib/check_mk_agent/local{{ '/' + item.cache_time | string if item.cache_time | default(False) else '' }}/{{ item.name }}"
+    state: absent
+  tags:
+    - cmkagent
+
+- name: Write service file
+  notify:
+    - Restart cmkagent
+  template:
+    src: service.j2
+    dest: /etc/systemd/system/check_mk@.service
+  tags:
+    - cmkagent
+
+- name: Write socket file
+  notify:
+    - Restart cmkagent
+  template:
+    src: socket.j2
+    dest: /etc/systemd/system/check_mk.socket
+  tags:
+    - cmkagent
+
+- name: Start check_mk socket
+  systemd:
+    name: check_mk.socket
+    state: started
+    daemon_reload: True
+    masked: False
+    enabled: True
+  tags:
+    - cmkagent
+
+...

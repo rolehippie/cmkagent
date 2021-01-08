@@ -1,0 +1,18 @@
+#!/bin/bash
+
+WARN={{ item.warn | default(5) }}
+CRIT={{ item.crit | default(10) }}
+
+TMP=$(ps aux | awk '$8=="S,Z" || $8=="Z"' | wc -l)
+
+if [ ${TMP} -lt ${WARN} ]; then
+    echo "0 Zombie-Processes count=${TMP} OK: ${TMP} Zombie-Processes detected"
+fi
+
+if [ ${TMP} -ge ${WARN} -a ${TMP} -lt ${CRIT} ]; then
+    echo "1 Zombie-Processes count=${TMP} WARN: ${TMP} Zombie-Processes detected"
+fi
+
+if [ ${TMP} -ge ${CRIT} ]; then
+    echo "2 Zombie-Processes count=${TMP} CRIT: ${TMP} Zombie-Processes detected"
+fi

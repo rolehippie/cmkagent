@@ -1,0 +1,39 @@
+# Standards: 0.1
+---
+# @var cmkagent_download_url:description: Base URL to download the files from
+# @var cmkagent_download_url:example: $ "https://demo.checkmk.com/demo/check_mk/check_mk/agents"
+cmkagent_download_url:
+
+# @var cmkagent_general_packages:description: List of packages to install
+cmkagent_general_packages: []
+
+# @var cmkagent_extra_packages:description: List of additional packages to install
+cmkagent_extra_packages: []
+
+# @var cmkagent_python_shebang:description: Package to install shebang compatible python
+cmkagent_python_shebang: python-is-python3
+
+# @var cmkagent_python_symlink:description: Symlink target for shebang compatible python
+cmkagent_python_symlink: /usr/bin/python3
+
+# @var cmkagent_general_plugins:description: List of plugins to enable
+cmkagent_general_plugins:
+  - name: mk_inventory
+    url: "https://raw.githubusercontent.com/tribe29/checkmk/master/agents/plugins/mk_inventory.linux"
+
+# @var cmkagent_extra_plugins:description: List of extra plugins to enable
+cmkagent_extra_plugins: []
+
+# @var cmkagent_general_checks:description: List of local checks to enable
+cmkagent_general_checks:
+  - name: zombie_processes
+    cache_time: 300
+    src: checks/zombie_processes.j2
+    warn: 5
+    crti: 10
+    state: present
+
+# @var cmkagent_extra_checks:description: List of extra local checks to enable
+cmkagent_extra_checks: []
+
+...

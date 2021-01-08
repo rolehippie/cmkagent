@@ -1,0 +1,10 @@
+# Standards: 1.2
+---
+- name: Converge
+  hosts: all
+  vars:
+    cmkagent_download_url: https://demo.checkmk.com/demo/check_mk/check_mk/agents
+  roles:
+    - role: cmkagent
+
+...

@@ -1,0 +1,11 @@
+[Unit]
+Description=Check_MK Agent Service
+
+[Service]
+ExecStart=-/usr/bin/check_mk_agent
+Type=forking
+
+User=root
+Group=root
+
+StandardInput=socket
