@@ -1,6 +1,6 @@
 # Standards: 1.2
 ---
-name: prometheus
+name: cmkagent
 
 dependency:
   name: galaxy
@@ -13,10 +13,10 @@ driver:
   name: openstack
 
 platforms:
-  - name: ubuntu-20.04-prometheus
+  - name: ubuntu-20.04-cmkagent
     flavor: pac1.g.medium
     image: ubuntu-20.04-amd64
-  - name: ubuntu-18.04-prometheus
+  - name: ubuntu-18.04-cmkagent
     flavor: pac1.g.medium
     image: ubuntu-18.04-amd64
 
