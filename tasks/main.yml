@@ -213,6 +213,9 @@
   template:
     src: service.j2
     dest: /etc/systemd/system/check_mk@.service
+    owner: root
+    group: root
+    mode: u=rw,g=r,o=r
   tags:
     - cmkagent
 
@@ -222,6 +225,9 @@
   template:
     src: socket.j2
     dest: /etc/systemd/system/check_mk.socket
+    owner: root
+    group: root
+    mode: u=rw,g=r,o=r
   tags:
     - cmkagent
 
