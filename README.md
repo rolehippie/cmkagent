@@ -22,6 +22,7 @@ Building and improving this Ansible role have been sponsored by my employer **Pr
   * [cmkagent_general_plugins](#cmkagent_general_plugins)
   * [cmkagent_python_shebang](#cmkagent_python_shebang)
   * [cmkagent_python_symlink](#cmkagent_python_symlink)
+  * [cmkagent_version](#cmkagent_version)
 * [Dependencies](#dependencies)
 * [License](#license)
 * [Author](#author)
@@ -37,7 +38,8 @@ Base URL to download the files from
 #### Default value
 
 ```YAML
-cmkagent_download_url:
+cmkagent_download_url: https://raw.githubusercontent.com/tribe29/checkmk/v{{ cmkagent_version
+  }}/agents
 ```
 
 #### Example usage
@@ -111,7 +113,7 @@ List of plugins to enable
 ```YAML
 cmkagent_general_plugins:
   - name: mk_inventory
-    url: https://raw.githubusercontent.com/tribe29/checkmk/master/agents/plugins/mk_inventory.linux
+    url: https://raw.githubusercontent.com/tribe29/checkmk/v{{ cmkagent_version }}/agents/plugins/mk_inventory.linux
 ```
 
 ### cmkagent_python_shebang
@@ -132,6 +134,16 @@ Symlink target for shebang compatible python
 
 ```YAML
 cmkagent_python_symlink: /usr/bin/python3
+```
+
+### cmkagent_version
+
+Version used to download agent and plugins
+
+#### Default value
+
+```YAML
+cmkagent_version: 2.0.0p16
 ```
 
 ## Dependencies
