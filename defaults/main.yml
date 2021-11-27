@@ -1,8 +1,12 @@
 # Standards: 1.2
 ---
+# @var cmkagent_version:description: Version used to download agent and plugins
+# renovate: datasource=github-tags depName=tribe29/checkmk
+cmkagent_version: 2.0.0p16
+
 # @var cmkagent_download_url:description: Base URL to download the files from
 # @var cmkagent_download_url:example: $ "https://demo.checkmk.com/demo/check_mk/check_mk/agents"
-cmkagent_download_url:
+cmkagent_download_url: "https://raw.githubusercontent.com/tribe29/checkmk/v{{ cmkagent_version }}/agents"
 
 # @var cmkagent_general_packages:description: List of packages to install
 cmkagent_general_packages: []
@@ -19,7 +23,7 @@ cmkagent_python_symlink: /usr/bin/python3
 # @var cmkagent_general_plugins:description: List of plugins to enable
 cmkagent_general_plugins:
   - name: mk_inventory
-    url: "https://raw.githubusercontent.com/tribe29/checkmk/master/agents/plugins/mk_inventory.linux"
+    url: "https://raw.githubusercontent.com/tribe29/checkmk/v{{ cmkagent_version }}/agents/plugins/mk_inventory.linux"
 
 # @var cmkagent_extra_plugins:description: List of extra plugins to enable
 cmkagent_extra_plugins: []
