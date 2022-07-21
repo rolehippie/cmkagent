@@ -11,6 +11,7 @@ Building and improving this Ansible role have been sponsored by my current and p
 ## Table of content
 
 - [Default Variables](#default-variables)
+  - [cmkagent_download_binaries](#cmkagent_download_binaries)
   - [cmkagent_download_url](#cmkagent_download_url)
   - [cmkagent_extra_checks](#cmkagent_extra_checks)
   - [cmkagent_extra_packages](#cmkagent_extra_packages)
@@ -29,6 +30,20 @@ Building and improving this Ansible role have been sponsored by my current and p
 ---
 
 ## Default Variables
+
+### cmkagent_download_binaries
+
+List of binaries to download
+
+#### Default value
+
+```YAML
+cmkagent_download_binaries:
+  - check_mk_agent.linux
+  - check_mk_caching_agent.linux
+  - mk-job
+  - waitmax
+```
 
 ### cmkagent_download_url
 
@@ -142,7 +157,7 @@ Version used to download agent and plugins
 #### Default value
 
 ```YAML
-cmkagent_version: 2.0.0p16
+cmkagent_version: 2.1.0p2
 ```
 
 ## Discovered Tags

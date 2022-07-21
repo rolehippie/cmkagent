@@ -2,11 +2,18 @@
 ---
 # @var cmkagent_version:description: Version used to download agent and plugins
 # renovate: datasource=github-tags depName=tribe29/checkmk
-cmkagent_version: 2.0.0p16
+cmkagent_version: 2.1.0p2
 
 # @var cmkagent_download_url:description: Base URL to download the files from
 # @var cmkagent_download_url:example: $ "https://demo.checkmk.com/demo/check_mk/check_mk/agents"
 cmkagent_download_url: "https://raw.githubusercontent.com/tribe29/checkmk/v{{ cmkagent_version }}/agents"
+
+# @var cmkagent_download_binaries:description: List of binaries to download
+cmkagent_download_binaries:
+  - check_mk_agent.linux
+  - check_mk_caching_agent.linux
+  - mk-job
+  - waitmax
 
 # @var cmkagent_general_packages:description: List of packages to install
 cmkagent_general_packages: []

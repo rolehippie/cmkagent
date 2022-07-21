@@ -30,11 +30,7 @@
     - cmkagent
 
 - name: Download required executables
-  loop:
-    - check_mk_agent.linux
-    - check_mk_caching_agent.linux
-    - mk-job
-    - waitmax
+  loop: "{{ cmkagent_download_binaries }}"
   get_url:
     url: "{{ cmkagent_download_url }}/{{ item }}"
     dest: "/usr/bin/{{ item | regex_replace('\\.linux$', '') }}"
@@ -204,6 +200,19 @@
   file:
     path: "/usr/lib/check_mk_agent/local{{ '/' + item.cache_time | string if item.cache_time | default(False) else '' }}/{{ item.name }}"
     state: absent
+  tags:
+    - cmkagent
+
+- name: Write async file
+  notify:
+    - Restart cmkagent
+  when: cmkagent_version is version('2.0.0', '>=', version_type='loose')
+  template:
+    src: async.j2
+    dest: /etc/systemd/system/check_mk_async@.service
+    owner: root
+    group: root
+    mode: u=rw,g=r,o=r
   tags:
     - cmkagent
 

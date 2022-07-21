@@ -3,9 +3,17 @@ Description=Check_MK Agent Service
 
 [Service]
 ExecStart=-/usr/bin/check_mk_agent
-Type=forking
+{% if cmkagent_version is version('2.0.0', '>=', version_type='loose') %}
+Environment=MK_RUN_ASYNC_PARTS=false
+Environment=MK_READ_REMOTE=true
 
+Type=simple
+User=root
+{% else %}
+
+Type=forking
 User=root
 Group=root
+{% endif %}
 
 StandardInput=socket
