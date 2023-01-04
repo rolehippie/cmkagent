@@ -2,7 +2,7 @@
 ---
 # @var cmkagent_version:description: Version used to download agent and plugins
 # renovate: datasource=github-tags depName=tribe29/checkmk
-cmkagent_version: 2.1.0p2
+cmkagent_version: 2.1.0p18
 
 # @var cmkagent_download_url:description: Base URL to download the files from
 # @var cmkagent_download_url:example: $ "https://demo.checkmk.com/demo/check_mk/check_mk/agents"
