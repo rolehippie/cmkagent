@@ -7,7 +7,7 @@
 # [![Readme Workflow](https://github.com/rolehippie/cmkagent/actions/workflows/readme.yml/badge.svg)](https://github.com/rolehippie/cmkagent/actions/workflows/readme.yml)
 # [![Galaxy Workflow](https://github.com/rolehippie/cmkagent/actions/workflows/galaxy.yml/badge.svg)](https://github.com/rolehippie/cmkagent/actions/workflows/galaxy.yml)
 # [![License: Apache-2.0](https://img.shields.io/github/license/rolehippie/cmkagent)](https://github.com/rolehippie/cmkagent/blob/master/LICENSE)
-# ![Ansible Role](https://img.shields.io/ansible/role/61264)
+# [![Ansible Role](https://img.shields.io/ansible/role/61264)](https://galaxy.ansible.com/rolehippie/cmkagent)
 #
 # Ansible role to install an CheckMK agent and some local checks.
 #
