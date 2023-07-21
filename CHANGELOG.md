@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.1.0](https://github.com/rolehippie/cmkagent/compare/v1.0.0...v1.1.0) (2023-07-21)
+
+
+### Features
+
+* **deps:** update dependency tribe29/checkmk to v2.2.0 ([05bb1e0](https://github.com/rolehippie/cmkagent/commit/05bb1e0e40d98725ff7efd2908c9625dbf2dc5ae))
+
+
+### Bugfixes
+
+* **deps:** update dependency tribe29/checkmk to v2.2.0p6 ([00f2c6d](https://github.com/rolehippie/cmkagent/commit/00f2c6dcc748c03bf0a17b86f76e2effb38f7b3c))
+
 ## 1.0.0 (2023-01-04)
 
 
