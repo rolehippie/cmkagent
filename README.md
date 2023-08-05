@@ -63,7 +63,7 @@ Base URL to download the files from
 #### Default value
 
 ```YAML
-cmkagent_download_url: https://raw.githubusercontent.com/tribe29/checkmk/v{{ cmkagent_version
+cmkagent_download_url: https://raw.githubusercontent.com/Checkmk/checkmk/v{{ cmkagent_version
   }}/agents
 ```
 
