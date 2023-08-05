@@ -1,12 +1,12 @@
 # Standards: 1.2
 ---
 # @var cmkagent_version:description: Version used to download agent and plugins
-# renovate: datasource=github-tags depName=tribe29/checkmk
+# renovate: datasource=github-tags depName=Checkmk/checkmk
 cmkagent_version: 2.2.0p6
 
 # @var cmkagent_download_url:description: Base URL to download the files from
 # @var cmkagent_download_url:example: $ "https://demo.checkmk.com/demo/check_mk/check_mk/agents"
-cmkagent_download_url: "https://raw.githubusercontent.com/tribe29/checkmk/v{{ cmkagent_version }}/agents"
+cmkagent_download_url: "https://raw.githubusercontent.com/Checkmk/checkmk/v{{ cmkagent_version }}/agents"
 
 # @var cmkagent_download_binaries:description: List of binaries to download
 cmkagent_download_binaries:
