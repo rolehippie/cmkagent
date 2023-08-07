@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.1](https://github.com/rolehippie/cmkagent/compare/v1.1.0...v1.1.1) (2023-08-07)
+
+
+### Bugfixes
+
+* use new home for checkmk github repo ([6a4f2e1](https://github.com/rolehippie/cmkagent/commit/6a4f2e1139fd4ca470cb5ca5c9944fcd25bc368a))
+
 ## [1.1.0](https://github.com/rolehippie/cmkagent/compare/v1.0.0...v1.1.0) (2023-07-21)
 
 
