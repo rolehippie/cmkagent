@@ -1,8 +1,7 @@
-# Standards: 1.2
 ---
 - name: Install required packages
   loop: "{{ cmkagent_general_packages + cmkagent_extra_packages }}"
-  package:
+  ansible.builtin.package:
     name: "{{ item }}"
     state: present
   tags:
@@ -12,7 +11,7 @@
   when:
     - ansible_distribution == 'Ubuntu'
     - ansible_distribution_version is version('20.04', '>=')
-  package:
+  ansible.builtin.package:
     name: "{{ cmkagent_python_shebang }}"
     state: present
   tags:
@@ -22,7 +21,7 @@
   when:
     - ansible_distribution == 'Ubuntu'
     - ansible_distribution_version is version('19.10', '<=')
-  file:
+  ansible.builtin.file:
     src: "{{ cmkagent_python_symlink }}"
     dest: /usr/bin/python
     state: link
@@ -31,7 +30,7 @@
 
 - name: Download required executables
   loop: "{{ cmkagent_download_binaries }}"
-  get_url:
+  ansible.builtin.get_url:
     url: "{{ cmkagent_download_url }}/{{ item }}"
     dest: "/usr/bin/{{ item | regex_replace('\\.linux$', '') }}"
     owner: root
@@ -49,7 +48,7 @@
     - /var/lib/check_mk_agent
     - /var/lib/check_mk_agent/job
     - /var/lib/check_mk_agent/spool
-  file:
+  ansible.builtin.file:
     path: "{{ item }}"
     group: root
     owner: root
@@ -63,7 +62,7 @@
   loop_control:
     label: "{{ item.0.name }}: {{ item.1.name }}"
   when: item.0.state | default("present") == "present"
-  copy:
+  ansible.builtin.copy:
     content: "{{ item.1.content }}"
     dest: "/etc/check_mk/{{ item.1.name }}"
     owner: root
@@ -77,7 +76,7 @@
   loop_control:
     label: "{{ item.0.name }}: {{ item.1.name }}"
   when: item.0.state | default("present") == "absent"
-  file:
+  ansible.builtin.file:
     path: "/etc/check_mk/{{ item.1.name }}"
     state: absent
   tags:
@@ -88,7 +87,7 @@
   loop_control:
     label: "{{ item.name }}"
   when: item.url | default(False) and item.state | default("present") == "present"
-  get_url:
+  ansible.builtin.get_url:
     url: "{{ item.url }}"
     dest: "/usr/lib/check_mk_agent/plugins/{{ item.name }}"
     owner: root
@@ -102,7 +101,7 @@
   loop_control:
     label: "{{ item.name }}"
   when: item.content | default(False) and item.state | default("present") == "present"
-  copy:
+  ansible.builtin.copy:
     content: "{{ item.content }}"
     dest: "/usr/lib/check_mk_agent/plugins/{{ item.name }}"
     owner: root
@@ -116,7 +115,7 @@
   loop_control:
     label: "{{ item.name }}"
   when: item.src | default(False) and item.state | default("present") == "present"
-  copy:
+  ansible.builtin.copy:
     src: "{{ item.src }}"
     dest: "/usr/lib/check_mk_agent/plugins/{{ item.name }}"
     owner: root
@@ -130,7 +129,7 @@
   loop_control:
     label: "{{ item.name }}"
   when: item.state | default("present") == "absent"
-  file:
+  ansible.builtin.file:
     path: "/usr/lib/check_mk_agent/plugins/{{ item.name }}"
     state: absent
   tags:
@@ -141,7 +140,7 @@
   loop_control:
     label: "{{ item.name }}"
   when: item.cache_time | default(0) > 0
-  file:
+  ansible.builtin.file:
     name: "/usr/lib/check_mk_agent/local/{{ item.cache_time }}"
     owner: root
     group: root
@@ -155,7 +154,7 @@
   loop_control:
     label: "{{ item.name }}"
   when: item.url | default(False) and item.state | default("present") == "present"
-  get_url:
+  ansible.builtin.get_url:
     url: "{{ item.url }}"
     dest: "/usr/lib/check_mk_agent/local{{ '/' + item.cache_time | string if item.cache_time | default(False) else '' }}/{{ item.name }}"
     owner: root
@@ -169,7 +168,7 @@
   loop_control:
     label: "{{ item.name }}"
   when: item.content | default(False) and item.state | default("present") == "present"
-  copy:
+  ansible.builtin.copy:
     content: "{{ item.content }}"
     dest: "/usr/lib/check_mk_agent/local{{ '/' + item.cache_time | string if item.cache_time | default(False) else '' }}/{{ item.name }}"
     owner: root
@@ -183,7 +182,7 @@
   loop_control:
     label: "{{ item.name }}"
   when: item.src | default(False) and item.state | default("present") == "present"
-  template:
+  ansible.builtin.template:
     src: "{{ item.src }}"
     dest: "/usr/lib/check_mk_agent/local{{ '/' + item.cache_time | string if item.cache_time | default(False) else '' }}/{{ item.name }}"
     owner: root
@@ -197,7 +196,7 @@
   loop_control:
     label: "{{ item.name }}"
   when: item.state | default("present") == "absent"
-  file:
+  ansible.builtin.file:
     path: "/usr/lib/check_mk_agent/local{{ '/' + item.cache_time | string if item.cache_time | default(False) else '' }}/{{ item.name }}"
     state: absent
   tags:
@@ -207,7 +206,7 @@
   notify:
     - Restart cmkagent
   when: cmkagent_version is version('2.0.0', '>=', version_type='loose')
-  template:
+  ansible.builtin.template:
     src: async.j2
     dest: /etc/systemd/system/check_mk_async@.service
     owner: root
@@ -219,7 +218,7 @@
 - name: Write service file
   notify:
     - Restart cmkagent
-  template:
+  ansible.builtin.template:
     src: service.j2
     dest: /etc/systemd/system/check_mk@.service
     owner: root
@@ -231,7 +230,7 @@
 - name: Write socket file
   notify:
     - Restart cmkagent
-  template:
+  ansible.builtin.template:
     src: socket.j2
     dest: /etc/systemd/system/check_mk.socket
     owner: root
@@ -241,7 +240,7 @@
     - cmkagent
 
 - name: Start check_mk socket
-  systemd:
+  ansible.builtin.systemd:
     name: check_mk.socket
     state: started
     daemon_reload: True

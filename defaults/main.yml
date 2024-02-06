@@ -1,4 +1,3 @@
-# Standards: 1.2
 ---
 # @var cmkagent_version:description: Version used to download agent and plugins
 # renovate: datasource=github-tags depName=Checkmk/checkmk
