@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.0.0](https://github.com/rolehippie/cmkagent/compare/v1.1.1...v2.0.0) (2024-02-12)
+
+
+### Features
+
+* drop support for ubuntu 18.04 ([229adb8](https://github.com/rolehippie/cmkagent/commit/229adb889f333ca194192e852d57257874b28ee0))
+* used full qualified collection names ([1c622ee](https://github.com/rolehippie/cmkagent/commit/1c622eea7c0bfaf743989344a80c7a78118fac2d))
+
 ## [1.1.1](https://github.com/rolehippie/cmkagent/compare/v1.1.0...v1.1.1) (2023-08-07)
 
 
