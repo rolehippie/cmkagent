@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.2.0](https://github.com/rolehippie/cmkagent/compare/v2.1.0...v2.2.0) (2025-05-12)
+
+
+### Features
+
+* **deps:** update dependency checkmk/checkmk to v2.4.0 ([#24](https://github.com/rolehippie/cmkagent/issues/24)) ([8a2e67a](https://github.com/rolehippie/cmkagent/commit/8a2e67a1d0b40549dd3d0b849c42ff04d50d9a23))
+
 ## [2.1.0](https://github.com/rolehippie/cmkagent/compare/v2.0.0...v2.1.0) (2024-05-06)
 
 
