@@ -58,10 +58,11 @@
     - cmkagent
 
 - name: Write plugin config
-  loop: "{{ (cmkagent_general_plugins + cmkagent_extra_plugins) | subelements('configs', skip_missing=True) }}"
+  loop: "{{ (cmkagent_general_plugins + cmkagent_extra_plugins) | subelements('configs', skip_missing=true) }}"
   loop_control:
     label: "{{ item.0.name }}: {{ item.1.name }}"
-  when: item.0.state | default("present") == "present"
+  when:
+    - item.0.state | default("present") == "present"
   ansible.builtin.copy:
     content: "{{ item.1.content }}"
     dest: "/etc/check_mk/{{ item.1.name }}"
@@ -72,10 +73,11 @@
     - cmkagent
 
 - name: Delete plugin config
-  loop: "{{ (cmkagent_general_plugins + cmkagent_extra_plugins) | subelements('configs', skip_missing=True) }}"
+  loop: "{{ (cmkagent_general_plugins + cmkagent_extra_plugins) | subelements('configs', skip_missing=true) }}"
   loop_control:
     label: "{{ item.0.name }}: {{ item.1.name }}"
-  when: item.0.state | default("present") == "absent"
+  when:
+    - item.0.state | default("present") == "absent"
   ansible.builtin.file:
     path: "/etc/check_mk/{{ item.1.name }}"
     state: absent
@@ -86,7 +88,9 @@
   loop: "{{ cmkagent_general_plugins + cmkagent_extra_plugins }}"
   loop_control:
     label: "{{ item.name }}"
-  when: item.url | default(False) and item.state | default("present") == "present"
+  when:
+    - false if item.url is not defined else (item.url | length > 0)
+    - ('present' if item.state is not defined else item.state) == "present"
   ansible.builtin.get_url:
     url: "{{ item.url }}"
     dest: "/usr/lib/check_mk_agent/plugins/{{ item.name }}"
@@ -100,7 +104,9 @@
   loop: "{{ cmkagent_general_plugins + cmkagent_extra_plugins }}"
   loop_control:
     label: "{{ item.name }}"
-  when: item.content | default(False) and item.state | default("present") == "present"
+  when:
+    - false if item.content is not defined else (item.content | length > 0)
+    - ('present' if item.state is not defined else item.state) == "present"
   ansible.builtin.copy:
     content: "{{ item.content }}"
     dest: "/usr/lib/check_mk_agent/plugins/{{ item.name }}"
@@ -114,7 +120,9 @@
   loop: "{{ cmkagent_general_plugins + cmkagent_extra_plugins }}"
   loop_control:
     label: "{{ item.name }}"
-  when: item.src | default(False) and item.state | default("present") == "present"
+  when:
+    - false if item.src is not defined else (item.src | length > 0)
+    - ('present' if item.state is not defined else item.state) == "present"
   ansible.builtin.copy:
     src: "{{ item.src }}"
     dest: "/usr/lib/check_mk_agent/plugins/{{ item.name }}"
@@ -128,7 +136,8 @@
   loop: "{{ cmkagent_general_plugins + cmkagent_extra_plugins }}"
   loop_control:
     label: "{{ item.name }}"
-  when: item.state | default("present") == "absent"
+  when:
+    - ('present' if item.state is not defined else item.state) == "absent"
   ansible.builtin.file:
     path: "/usr/lib/check_mk_agent/plugins/{{ item.name }}"
     state: absent
@@ -139,7 +148,8 @@
   loop: "{{ cmkagent_general_checks + cmkagent_extra_checks }}"
   loop_control:
     label: "{{ item.name }}"
-  when: item.cache_time | default(0) > 0
+  when:
+    - (0 if item.cache_time is not defined else item.cache_time) > 0
   ansible.builtin.file:
     name: "/usr/lib/check_mk_agent/local/{{ item.cache_time }}"
     owner: root
@@ -153,10 +163,12 @@
   loop: "{{ cmkagent_general_checks + cmkagent_extra_checks }}"
   loop_control:
     label: "{{ item.name }}"
-  when: item.url | default(False) and item.state | default("present") == "present"
+  when:
+    - false if item.url is not defined else (item.url | length > 0)
+    - ('present' if item.state is not defined else item.state) == "present"
   ansible.builtin.get_url:
     url: "{{ item.url }}"
-    dest: "/usr/lib/check_mk_agent/local{{ '/' + item.cache_time | string if item.cache_time | default(False) else '' }}/{{ item.name }}"
+    dest: "/usr/lib/check_mk_agent/local{{ '/' + item.cache_time | string if item.cache_time | default(false) else '' }}/{{ item.name }}"
     owner: root
     group: root
     mode: o=rwx,g=rx,o=rx
@@ -167,10 +179,12 @@
   loop: "{{ cmkagent_general_checks + cmkagent_extra_checks }}"
   loop_control:
     label: "{{ item.name }}"
-  when: item.content | default(False) and item.state | default("present") == "present"
+  when:
+    - false if item.content is not defined else (item.content | length > 0)
+    - ('present' if item.state is not defined else item.state) == "present"
   ansible.builtin.copy:
     content: "{{ item.content }}"
-    dest: "/usr/lib/check_mk_agent/local{{ '/' + item.cache_time | string if item.cache_time | default(False) else '' }}/{{ item.name }}"
+    dest: "/usr/lib/check_mk_agent/local{{ '/' + item.cache_time | string if item.cache_time | default(false) else '' }}/{{ item.name }}"
     owner: root
     group: root
     mode: o=rwx,g=rx,o=rx
@@ -181,10 +195,12 @@
   loop: "{{ cmkagent_general_checks + cmkagent_extra_checks }}"
   loop_control:
     label: "{{ item.name }}"
-  when: item.src | default(False) and item.state | default("present") == "present"
+  when:
+    - false if item.src is not defined else (item.src | length > 0)
+    - ('present' if item.state is not defined else item.state) == "present"
   ansible.builtin.template:
     src: "{{ item.src }}"
-    dest: "/usr/lib/check_mk_agent/local{{ '/' + item.cache_time | string if item.cache_time | default(False) else '' }}/{{ item.name }}"
+    dest: "/usr/lib/check_mk_agent/local{{ '/' + item.cache_time | string if item.cache_time | default(false) else '' }}/{{ item.name }}"
     owner: root
     group: root
     mode: o=rwx,g=rx,o=rx
@@ -195,9 +211,10 @@
   loop: "{{ cmkagent_general_checks + cmkagent_extra_checks }}"
   loop_control:
     label: "{{ item.name }}"
-  when: item.state | default("present") == "absent"
+  when:
+    - ('present' if item.state is not defined else item.state) == "absent"
   ansible.builtin.file:
-    path: "/usr/lib/check_mk_agent/local{{ '/' + item.cache_time | string if item.cache_time | default(False) else '' }}/{{ item.name }}"
+    path: "/usr/lib/check_mk_agent/local{{ '/' + item.cache_time | string if item.cache_time | default(false) else '' }}/{{ item.name }}"
     state: absent
   tags:
     - cmkagent
@@ -205,7 +222,8 @@
 - name: Write async file
   notify:
     - Restart cmkagent
-  when: cmkagent_version is version('2.0.0', '>=', version_type='loose')
+  when:
+    - cmkagent_version is version('2.0.0', '>=', version_type='loose')
   ansible.builtin.template:
     src: async.j2
     dest: /etc/systemd/system/check_mk_async@.service
@@ -243,9 +261,9 @@
   ansible.builtin.systemd:
     name: check_mk.socket
     state: started
-    daemon_reload: True
-    masked: False
-    enabled: True
+    daemon_reload: true
+    masked: false
+    enabled: true
   tags:
     - cmkagent
 
