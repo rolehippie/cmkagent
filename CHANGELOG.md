@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.3.0](https://github.com/rolehippie/cmkagent/compare/v2.2.0...v2.3.0) (2025-09-18)
+
+
+### Features
+
+* apply new repo structure and update linting ([22287d7](https://github.com/rolehippie/cmkagent/commit/22287d73066fbf986f0228010b868bcfda976031))
+
 ## [2.2.0](https://github.com/rolehippie/cmkagent/compare/v2.1.0...v2.2.0) (2025-05-12)
 
 
