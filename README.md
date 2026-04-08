@@ -62,8 +62,7 @@ Base URL to download the files from
 #### Default value
 
 ```YAML
-cmkagent_download_url: https://raw.githubusercontent.com/Checkmk/checkmk/v{{ 
-  cmkagent_version }}/agents
+cmkagent_download_url: https://raw.githubusercontent.com/Checkmk/checkmk/v{{ cmkagent_version }}/agents
 ```
 
 #### Example usage
@@ -137,8 +136,7 @@ List of plugins to enable
 ```YAML
 cmkagent_general_plugins:
   - name: mk_inventory
-    url: https://raw.githubusercontent.com/tribe29/checkmk/v{{ cmkagent_version 
-      }}/agents/plugins/mk_inventory.linux
+    url: https://raw.githubusercontent.com/tribe29/checkmk/v{{ cmkagent_version }}/agents/plugins/mk_inventory.linux
 ```
 
 ### cmkagent_python_shebang
