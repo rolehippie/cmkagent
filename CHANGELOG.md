@@ -1,5 +1,7 @@
 # Changelog
 
+## [2.5.0](https://github.com/rolehippie/cmkagent/compare/v2.4.0...v2.5.0) (2026-07-27)
+
 ## [2.4.0](https://github.com/rolehippie/cmkagent/compare/v2.3.0...v2.4.0) (2026-05-04)
 
 ### Dependencies
