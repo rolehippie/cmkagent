@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.6.0](https://github.com/rolehippie/cmkagent/compare/v2.5.0...v2.6.0) (2026-08-10)
+
+### Dependencies
+
+* **minor:** update dependency pipx:ansible-doctor to v8.4.0 ([#59](https://github.com/rolehippie/cmkagent/issues/59)) ([20ceb06](https://github.com/rolehippie/cmkagent/commit/20ceb065a3a2e8ad4267b72415771676396d7062))
+* **patch:** update dependency python to v3.14.7 ([#57](https://github.com/rolehippie/cmkagent/issues/57)) ([5d2ad3d](https://github.com/rolehippie/cmkagent/commit/5d2ad3d1653ef501637601cda4fbb0f39a514b68))
+
 ## [2.5.0](https://github.com/rolehippie/cmkagent/compare/v2.4.0...v2.5.0) (2026-07-27)
 
 ## [2.4.0](https://github.com/rolehippie/cmkagent/compare/v2.3.0...v2.4.0) (2026-05-04)
