@@ -1,5 +1,14 @@
 # Changelog
 
+## [2.7.0](https://github.com/rolehippie/cmkagent/compare/v2.6.0...v2.7.0) (2026-08-17)
+
+### Dependencies
+
+* **minor:** update dependency pipx:ansible-lint to v26.8.0 ([#62](https://github.com/rolehippie/cmkagent/issues/62)) ([fcb1d3c](https://github.com/rolehippie/cmkagent/commit/fcb1d3c99d9caa5d4a857dee33e81745b6cb6992))
+* **minor:** update dependency pipx:molecule to v26.8.0 ([#63](https://github.com/rolehippie/cmkagent/issues/63)) ([8ef8848](https://github.com/rolehippie/cmkagent/commit/8ef8848a46a95571ab80c9b69018d942e23d187f))
+* **patch:** update dependency pipx:ansible-core to v2.21.3 ([#60](https://github.com/rolehippie/cmkagent/issues/60)) ([399c236](https://github.com/rolehippie/cmkagent/commit/399c2369a5bafb0dc71cd53e9dedcbf5fcc51d49))
+* **patch:** update dependency pre-commit to v4.6.2 ([#61](https://github.com/rolehippie/cmkagent/issues/61)) ([e4f3294](https://github.com/rolehippie/cmkagent/commit/e4f329459d1cdc912ca6995bfc0039f8b8f5d670))
+
 ## [2.6.0](https://github.com/rolehippie/cmkagent/compare/v2.5.0...v2.6.0) (2026-08-10)
 
 ### Dependencies
